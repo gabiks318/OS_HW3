@@ -22,6 +22,7 @@ Queue worker_queue = NULL;
 
 int* thread_static;
 int* thread_dynamic;
+int* thread_total;
 
 void getargs(int *port, int *thread_num, int *queue_size, char* schedalg , int argc, char *argv[])
 {
@@ -52,7 +53,7 @@ void* thread_main(void* args){
         struct timeval handle_time;
         gettimeofday(&handle_time,NULL);
 
-        requestHandle(fd, arrival, handle_time, thread_static, thread_dynamic, thread_index);
+        requestHandle(fd, arrival, handle_time, thread_static, thread_dynamic, thread_total, thread_index);
         Close(fd);
 
         pthread_mutex_lock(&m);
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
     }
     thread_dynamic = malloc(sizeof(int)*threads_num);
     thread_static = malloc(sizeof(int)*threads_num);
+    thread_total = malloc(sizeof(int)*threads_num);
     for(int i =0; i < threads_num; i++){
         thread_dynamic[i] = 0;
         thread_static[i] = 0;
