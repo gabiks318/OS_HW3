@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     //threads create
     pthread_t* threads = malloc(sizeof(*threads)*threads_num);
     for(int i = 0; i< threads_num; i++){
-        int* thread_args = {i};
+        int thread_args[] = {i,};
         pthread_create(&threads[i], NULL, thread_main, (void *)thread_args);
     }
     thread_dynamic = malloc(sizeof(int)*threads_num);
@@ -125,8 +125,10 @@ int main(int argc, char *argv[])
                 continue;
             }
             else {
-                int num_to_drop = queue_size(wait_queue) / 2;
+                int num_to_drop = queue_max_size / 2;
                 for(int i = 0; i < num_to_drop; i++) {
+                    if(queue_empty(wait_queue))
+                        break;
                     int random_index = rand() % queue_size(wait_queue);
                     int fd = dequeue_index(wait_queue, random_index);
                     Close(fd);
