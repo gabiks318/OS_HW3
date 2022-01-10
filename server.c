@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
                 continue;
             }
             else {
-                int num_to_drop = queue_max_size / 2;
+                int num_to_drop = (int)((queue_size(wait_queue) + 1) / 2);
                 for(int i = 0; i < num_to_drop; i++) {
                     if(queue_empty(wait_queue))
                         break;
